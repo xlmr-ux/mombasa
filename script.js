@@ -269,4 +269,104 @@ function createMeshes() {
   coneM.position.y = 3.25;
   
   letterM.add(letterMLeft, coneM, letterMRight);
-  letter
+  letterM.scale.set(2, 2, 2);
+  scene.add(letterM);
+
+  // Letter S
+
+  // Marshmallows
+  marshmallowH = new THREE.Mesh(geometries.cylinderWide, materials.green2);
+  marshmallowH.rotation.x = -Math.PI / 2;
+  marshmallowH.position.set(3.5, 3, 2.25);
+
+  halfTorusS = new THREE.Mesh(geometries.halfTorus, materials.pink);
+  halfTorusS.position.set(-2.5, 3, -2.25);
+
+  halfTorusS2 = new THREE.Mesh(geometries.halfTorus, materials.blue);
+  halfTorusS2.position.set(0, 1.75, -0.75);
+
+  halfTorusS3 = new THREE.Mesh(geometries.halfTorus, materials.green2);
+  halfTorusS3.position.set(2.5, 1.75, -2.25);
+
+  halfTorusS4 = new THREE.Mesh(geometries.halfTorus, materials.blue);
+  halfTorusS4.position.set(-3.5, 2.75, 0.25);
+
+  discS2 = new THREE.Mesh(geometries.disc, materials.green2);
+  discS2.position.set(1.5, -0.5, 2);
+
+  const letterS = new THREE.Group();
+  letterS.add(marshmallowH, halfTorusS, halfTorusS2, halfTorusS3, halfTorusS4, discS2);
+  
+  letterS.position.x = 0;
+
+  // Letter I
+  letterI = new THREE.Mesh(geometries.cylinderThin, materials.green2);
+  letterI.rotation.x = -Math.PI / 2;
+  letterI.position.set(0, -2, -5);
+
+  // letter M 2
+
+  letterM2 = new THREE.Mesh(geometries.cylinderThin, materials.matcapGold);
+  letterM2.position.set(1, 0, -9);
+
+  sphereM2 = new THREE.Mesh(geometries.sphere, materials.pink);
+  sphereM2.position.set(0, -1, -7);
+  
+  sphere2M2 = new THREE.Mesh(geometries.sphere, materials.green2);
+  sphere2M2.position.set(2, -1, -7);
+
+  const letterMGroup = new THREE.Group();
+  letterMGroup.add(letterM2, sphereM2, sphere2M2);
+  letterMGroup.position.x = 1;
+
+  // Final Scene
+  const finalScene = new THREE.Group();
+  finalScene.add(letterS, letterMGroup, letterI);
+  scene.add(finalScene);
+
+}
+
+function render() {
+  
+  const delta = clock.getDelta();
+  if (palm) palm.rotation.y += 0.02;
+  
+  renderer.render(scene, camera);
+  requestAnimationFrame(render);
+
+}
+
+function onMouseMove(event) {
+  
+  mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+  mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+  
+}
+
+function onTouch(event) {
+
+  if (event.touches.length == 1) {
+    mouseX = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
+    mouseY = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
+  }
+  
+}
+
+function onWindowResize() {
+
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  
+}
+
+function createPalm() {
+
+  const palm = new THREE.Group();
+  
+  const disc = new THREE.Mesh(createGeometries().disc, createMaterials().green2);
+  palm.add(disc);
+  
+  return palm;
+}
+
